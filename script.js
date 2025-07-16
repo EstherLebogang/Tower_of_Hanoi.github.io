@@ -141,39 +141,58 @@ function touchMove(e) {
 
 function touchEnd(e) {
   if (!touchData.disk) return;
-  const rods = [rod1, rod2, rod3];
-  let droppedOn = null;
+
+  const touch = e.changedTouches[0]; // Use the position where touch ends
+  const droppedX = touch.clientX;
+  const droppedY = touch.clientY;
+
+  const rods = [document.getElementById("rod1"), document.getElementById("rod2"), document.getElementById("rod3")];
+  let droppedOnRod = null;
+
   rods.forEach(rod => {
     const rect = rod.getBoundingClientRect();
-    if (touchData.startX >= rect.left && touchData.startX <= rect.right &&
-        touchData.startY >= rect.top && touchData.startY <= rect.bottom) {
-      droppedOn = rod;
+    if (
+      droppedX >= rect.left &&
+      droppedX <= rect.right &&
+      droppedY >= rect.top &&
+      droppedY <= rect.bottom
+    ) {
+      droppedOnRod = rod;
     }
   });
 
   const disk = touchData.disk;
   const draggedSize = parseInt(disk.getAttribute("data-size"));
-  const topDisk = [...droppedOn?.querySelectorAll(".disk")].pop();
-  const topSize = topDisk ? parseInt(topDisk.getAttribute("data-size")) : Infinity;
 
-  if (droppedOn && draggedSize < topSize) {
-    touchData.originalParent.removeChild(disk);
-    droppedOn.appendChild(disk);
-    moveCount++;
-    document.getElementById("moveCount").textContent = moveCount;
-    checkWinCondition();
+  if (droppedOnRod) {
+    const disks = [...droppedOnRod.querySelectorAll(".disk")];
+    const topDisk = disks.length ? disks[disks.length - 1] : null;
+    const topSize = topDisk ? parseInt(topDisk.getAttribute("data-size")) : Infinity;
+
+    if (draggedSize < topSize) {
+      touchData.originalParent.removeChild(disk);
+      droppedOnRod.appendChild(disk);
+      moveCount++;
+      document.getElementById("moveCount").textContent = moveCount;
+      checkWinCondition();
+    } else {
+      touchData.originalParent.appendChild(disk); // invalid move
+    }
   } else {
-    touchData.originalParent.appendChild(disk);
+    touchData.originalParent.appendChild(disk); // dropped outside
   }
 
+  // Reset disk style
   disk.style.position = '';
   disk.style.left = '';
   disk.style.top = '';
   disk.style.zIndex = '';
   disk.classList.remove('dragging');
+
   touchData.disk = null;
   e.preventDefault();
 }
+
 
 function rodTouchEnd(e) {
   e.preventDefault();
