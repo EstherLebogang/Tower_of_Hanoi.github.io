@@ -1,0 +1,203 @@
+ body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px 30px;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  h1 {
+    margin-top: 0;
+  }
+  #game {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin: 50px auto 0;
+    width: 90%;
+    max-width: 700px;
+    height: 360px; /* increased to fit rods */
+    position: relative;
+  }
+  .rod {
+    width: 180px;  /* match tower base width */
+    height: 340px; /* total height including rod and disks */
+    position: relative;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding-bottom: 40px; /* leave space for base */
+    border-radius: 4px;
+  }
+
+  /* Tower base styling */
+  .tower-base {
+    width: 180px;
+    height: 20px;
+    background: linear-gradient(45deg, #8b4513, #a0522d);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    bottom: 0;
+  }
+
+  /* Tower rod styling */
+  .tower-rod {
+    width: 8px;
+    height: 320px;
+    background: linear-gradient(45deg, #444, #666);
+    border-radius: 4px;
+    position: absolute;
+    bottom: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .disk {
+    height: 30px;
+    margin: 5px 0;
+    border-radius: 6px;
+    cursor: grab;
+    transition: all 0.3s ease;
+    user-select: none;
+    touch-action: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: relative; /* above the rod and base */
+    z-index: 1;
+  }
+  .disk.dragging {
+    opacity: 0.5;
+  }
+  /* Disk gradient styles and widths */
+  .disk-1 { width: 60px; background: linear-gradient(45deg, #ff6b6b, #ee5a24); }
+  .disk-2 { width: 80px; background: linear-gradient(45deg, #feca57, #ff9ff3); }
+  .disk-3 { width: 100px; background: linear-gradient(45deg, #48dbfb, #0abde3); }
+  .disk-4 { width: 120px; background: linear-gradient(45deg, #1dd1a1, #10ac84); }
+  .disk-5 { width: 140px; background: linear-gradient(45deg, #a55eea, #8e44ad); }
+  .disk-6 { width: 160px; background: linear-gradient(45deg, #fd79a8, #e84393); }
+  .disk-7 { width: 180px; background: linear-gradient(45deg, #fdcb6e, #e17055); }
+
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    font-size: 1.1rem;
+    flex-wrap: wrap;
+  }
+  .controls label {
+    font-weight: bold;
+  }
+  .controls select, .controls button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 2px solid #3498db;
+    background-color: white;
+    color: #3498db;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .controls select:hover, .controls button:hover {
+    background-color: #3498db;
+    color: white;
+  }
+  .controls p {
+    margin: 0;
+    color: #333;
+    min-width: 120px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  /* Dark mode styles */
+  body.dark {
+    background: #121212;
+    color: #eee;
+  }
+  body.dark .container {
+    background: #222;
+    box-shadow: 0 8px 20px rgba(255,255,255,0.1);
+  }
+  body.dark .rod {
+    background-color: transparent;
+  }
+  body.dark .tower-base {
+    background: linear-gradient(45deg, #4b2e0c, #5a3a12);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+  }
+  body.dark .tower-rod {
+    background: linear-gradient(45deg, #888, #aaa);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  }
+  body.dark .disk.dragging {
+    opacity: 0.7;
+  }
+  body.dark .controls select, 
+  body.dark .controls button {
+    border-color: #7f8c8d;
+    background-color: #333;
+    color: #eee;
+  }
+  body.dark .controls select:hover,
+  body.dark .controls button:hover {
+    background-color: #7f8c8d;
+    color: #121212;
+  }
+  body.dark .controls p {
+    color: #ddd;
+  }
+
+  /* Responsive for mobile */
+  @media (max-width: 480px) {
+    #game {
+      height: 280px; /* scaled down height */
+    }
+    .rod {
+      width: 140px;
+      height: 260px;
+      padding-bottom: 30px;
+    }
+    .tower-base {
+      width: 140px;
+      height: 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .tower-rod {
+      width: 6px;
+      height: 240px;
+      bottom: 16px;
+      border-radius: 3px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+    .disk {
+      height: 25px;
+      margin: 3px 0;
+      border-radius: 4px;
+    }
+    .disk-1 { width: 50px; }
+    .disk-2 { width: 65px; }
+    .disk-3 { width: 80px; }
+    .disk-4 { width: 95px; }
+    .disk-5 { width: 110px; }
+    .disk-6 { width: 125px; }
+    .disk-7 { width: 140px; }
+    .controls {
+      font-size: 1rem;
+      gap: 12px;
+    }
+    .controls select, .controls button {
+      padding: 5px 10px;
+      font-size: 0.9rem;
+    }
+  }
