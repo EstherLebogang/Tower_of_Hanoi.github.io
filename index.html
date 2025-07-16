@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tower of Hanoi</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tower of Hanoi</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
@@ -20,7 +21,6 @@
       </select>
 
       <button onclick="restartGame()">Restart</button>
-
       <button id="darkModeToggle" aria-label="Toggle Dark Mode">🌙 Dark Mode</button>
 
       <p>Moves: <span id="moveCount">0</span></p>
@@ -41,9 +41,10 @@
         <div class="tower-base"></div>
       </div>
     </div>
-	 <p style="margin-top: 30px; font-style: italic; font-weight: 600; color: #e11584;">
-    Get every disk to the last tower to WIN.
-  </p>
+
+    <p class="goal-text">Get every disk to the last tower.</p>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
